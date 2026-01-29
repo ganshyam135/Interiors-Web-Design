@@ -12,12 +12,10 @@ import Contact from "./pages/contact";
 import NotFound from "./pages/not-found";
 import TVUnitGallery from "./pages/gallery/tv-unit";
 import KitchenGallery from "./pages/gallery/kitchen";
-import BedroomGallery from "./pages/gallery/bedroom";
+import BedroomWardrobeGallery from "./pages/gallery/bedroom";
 import PoojaRoomGallery from "./pages/gallery/pooja-room";
-import LivingRoomGallery from "./pages/gallery/living-room";
-import DiningRoomGallery from "./pages/gallery/dining-room";
-import StudyRoomGallery from "./pages/gallery/study-room";
-import BathroomGallery from "./pages/gallery/bathroom";
+import CrockeryUnitGallery from "./pages/gallery/crockery-unit";
+import StudyOfficeGallery from "./pages/gallery/study-office";
 
 function Router() {
   const [location] = useLocation();
@@ -38,12 +36,10 @@ function Router() {
           <Route path="/contact" component={Contact} />
           <Route path="/gallery/tv-unit" component={TVUnitGallery} />
           <Route path="/gallery/kitchen" component={KitchenGallery} />
-          <Route path="/gallery/bedroom" component={BedroomGallery} />
+          <Route path="/gallery/bedroom-wardrobe" component={BedroomWardrobeGallery} />
           <Route path="/gallery/pooja-room" component={PoojaRoomGallery} />
-          <Route path="/gallery/living-room" component={LivingRoomGallery} />
-          <Route path="/gallery/dining-room" component={DiningRoomGallery} />
-          <Route path="/gallery/study-room" component={StudyRoomGallery} />
-          <Route path="/gallery/bathroom" component={BathroomGallery} />
+          <Route path="/gallery/crockery-unit" component={CrockeryUnitGallery} />
+          <Route path="/gallery/study-office" component={StudyOfficeGallery} />
           <Route component={NotFound} />
         </Switch>
       </main>

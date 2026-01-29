@@ -1,44 +1,11 @@
 import { Link } from "wouter";
+import { useState } from "react";
+import ImageModal from "../../components/ImageModal";
+import { getGalleryImages } from "../../utils/galleryUtils";
 
 export default function TVUnitGallery() {
-  const images = [
-    {
-      id: 1,
-      src: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Modern TV Unit Design",
-      description: "Contemporary entertainment center with clean lines"
-    },
-    {
-      id: 2,
-      src: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Wall-Mounted TV Unit",
-      description: "Space-saving wall-mounted design"
-    },
-    {
-      id: 3,
-      src: "https://images.unsplash.com/photo-1549497538-303791108f95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Classic TV Console",
-      description: "Traditional wooden entertainment console"
-    },
-    {
-      id: 4,
-      src: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Floating TV Unit",
-      description: "Minimalist floating design"
-    },
-    {
-      id: 5,
-      src: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Built-in TV Wall",
-      description: "Custom built-in entertainment wall"
-    },
-    {
-      id: 6,
-      src: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Corner TV Unit",
-      description: "Space-efficient corner design"
-    }
-  ];
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  const images = getGalleryImages('tv-unit');
 
   return (
     <>
@@ -48,7 +15,7 @@ export default function TVUnitGallery() {
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-serif mb-6 text-charcoal dark:text-charcoal-light">TV Unit Designs</h1>
             <p className="text-lg text-darkgray dark:text-darkgray-light max-w-2xl mx-auto mb-8">
-              Explore our collection of modern and functional TV unit designs that perfectly blend style with entertainment needs.
+              Browse our portfolio of custom TV unit designs and entertainment centers.
             </p>
             <Link href="/" className="text-gold hover:text-charcoal dark:hover:text-charcoal-light font-medium">
               ← Back to Home
@@ -60,19 +27,27 @@ export default function TVUnitGallery() {
       {/* Gallery Section */}
       <section className="py-20 md:py-28 bg-white dark:bg-gray-900">
         <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {images.map((image) => (
-              <div key={image.id} className="group relative overflow-hidden bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {images.map((imageSrc, index) => (
+              <div 
+                key={index} 
+                className="group relative overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+                onClick={() => setSelectedImageIndex(index)}
+              >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img 
-                    src={image.src} 
-                    alt={image.title}
+                    src={imageSrc} 
+                    alt={`TV Unit Design ${index + 1}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-serif text-charcoal dark:text-charcoal-light mb-2">{image.title}</h3>
-                  <p className="text-darkgray dark:text-darkgray-light">{image.description}</p>
+                {/* Click indicator */}
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white bg-opacity-90 rounded-full p-3">
+                    <svg className="w-6 h-6 text-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             ))}
@@ -84,9 +59,9 @@ export default function TVUnitGallery() {
       <section className="py-20 md:py-28 bg-charcoal dark:bg-gray-800 text-white">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-serif mb-6">Love These TV Unit Designs?</h2>
+            <h2 className="text-3xl md:text-4xl font-serif mb-6">Love These Luxury TV Unit Designs?</h2>
             <p className="text-lg mb-8">
-              Get in touch with us to create a custom TV unit design that perfectly fits your space and style.
+              Experience the perfect blend of elegance and functionality. Contact us to create a bespoke TV unit with premium materials, geometric patterns, and sophisticated finishes.
             </p>
             <div className="inline-flex items-center space-x-2 text-gold border-b-2 border-gold pb-1">
               <span className="text-lg font-medium">Contact details below</span>
@@ -97,6 +72,20 @@ export default function TVUnitGallery() {
           </div>
         </div>
       </section>
+
+      {/* Image Modal */}
+      {selectedImageIndex !== null && (
+        <ImageModal
+          isOpen={selectedImageIndex !== null}
+          imageSrc={images[selectedImageIndex]}
+          imageAlt={`TV Unit Design ${selectedImageIndex + 1}`}
+          onClose={() => setSelectedImageIndex(null)}
+          onPrevious={selectedImageIndex > 0 ? () => setSelectedImageIndex(selectedImageIndex - 1) : undefined}
+          onNext={selectedImageIndex < images.length - 1 ? () => setSelectedImageIndex(selectedImageIndex + 1) : undefined}
+          hasPrevious={selectedImageIndex > 0}
+          hasNext={selectedImageIndex < images.length - 1}
+        />
+      )}
     </>
   );
 }

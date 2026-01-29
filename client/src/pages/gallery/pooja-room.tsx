@@ -1,44 +1,12 @@
 import { Link } from "wouter";
+import { useState } from "react";
+import ImageModal from "../../components/ImageModal";
+import { getGalleryImages } from "../../utils/galleryUtils";
 
 export default function PoojaRoomGallery() {
-  const images = [
-    {
-      id: 1,
-      src: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Traditional Pooja Room",
-      description: "Classic wooden pooja room design"
-    },
-    {
-      id: 2,
-      src: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Modern Pooja Room",
-      description: "Contemporary spiritual space design"
-    },
-    {
-      id: 3,
-      src: "https://images.unsplash.com/photo-1549497538-303791108f95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Compact Pooja Corner",
-      description: "Space-efficient corner pooja design"
-    },
-    {
-      id: 4,
-      src: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Wall-Mounted Pooja Unit",
-      description: "Elegant wall-mounted spiritual space"
-    },
-    {
-      id: 5,
-      src: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Temple Style Pooja Room",
-      description: "Traditional temple-inspired design"
-    },
-    {
-      id: 6,
-      src: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      title: "Marble Pooja Room",
-      description: "Luxurious marble finish pooja space"
-    }
-  ];
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+  
+  const images = getGalleryImages('pooja-room');
 
   return (
     <>
@@ -59,18 +27,18 @@ export default function PoojaRoomGallery() {
       <section className="py-20 md:py-28 bg-white dark:bg-gray-900">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {images.map((image) => (
-              <div key={image.id} className="group relative overflow-hidden bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all">
+            {images.map((image, index) => (
+              <div 
+                key={index} 
+                className="group relative overflow-hidden bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer"
+                onClick={() => setSelectedImageIndex(index)}
+              >
                 <div className="aspect-[4/3] overflow-hidden">
                   <img 
-                    src={image.src} 
-                    alt={image.title}
+                    src={image} 
+                    alt={`Pooja Room Design ${index + 1}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-serif text-charcoal dark:text-charcoal-light mb-2">{image.title}</h3>
-                  <p className="text-darkgray dark:text-darkgray-light">{image.description}</p>
                 </div>
               </div>
             ))}
@@ -94,6 +62,19 @@ export default function PoojaRoomGallery() {
           </div>
         </div>
       </section>
+
+      {selectedImageIndex !== null && (
+        <ImageModal
+          isOpen={selectedImageIndex !== null}
+          imageSrc={images[selectedImageIndex]}
+          imageAlt={`Pooja Room Design ${selectedImageIndex + 1}`}
+          onClose={() => setSelectedImageIndex(null)}
+          onPrevious={selectedImageIndex > 0 ? () => setSelectedImageIndex(selectedImageIndex - 1) : undefined}
+          onNext={selectedImageIndex < images.length - 1 ? () => setSelectedImageIndex(selectedImageIndex + 1) : undefined}
+          hasPrevious={selectedImageIndex > 0}
+          hasNext={selectedImageIndex < images.length - 1}
+        />
+      )}
     </>
   );
 }

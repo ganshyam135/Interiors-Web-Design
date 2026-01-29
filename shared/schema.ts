@@ -1,4 +1,4 @@
-import { pgTable as table, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+import { sqliteTable as table, text, integer, blob } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { relations } from "drizzle-orm";
@@ -6,7 +6,7 @@ import { z } from "zod";
 
 // Users table (kept from original)
 export const users = table("users", {
-  id: serial("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
 });
@@ -21,13 +21,13 @@ export type User = typeof users.$inferSelect;
 
 // Projects for portfolio
 export const projects = table("projects", {
-  id: serial("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   title: text("title").notNull(),
   description: text("description").notNull(),
   category: text("category").notNull(), // residential, commercial, renovation
   imageUrl: text("image_url").notNull(),
-  featured: boolean("featured").default(false),
-  createdAt: timestamp("created_at").defaultNow().notNull()
+  featured: integer("featured", { mode: 'boolean' }).default(0),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
 });
 
 export const insertProjectSchema = createInsertSchema(projects, {
@@ -43,12 +43,12 @@ export type Project = typeof projects.$inferSelect;
 
 // Before/After projects
 export const transformations = table("transformations", {
-  id: serial("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   title: text("title").notNull(),
   description: text("description").notNull(),
   beforeImageUrl: text("before_image_url").notNull(),
   afterImageUrl: text("after_image_url").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull()
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
 });
 
 export const insertTransformationSchema = createInsertSchema(transformations, {
@@ -63,12 +63,12 @@ export type Transformation = typeof transformations.$inferSelect;
 
 // Services
 export const services = table("services", {
-  id: serial("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   title: text("title").notNull(),
   description: text("description").notNull(),
   imageUrl: text("image_url").notNull(),
   features: text("features").notNull(), // Array of features as JSON string
-  createdAt: timestamp("created_at").defaultNow().notNull()
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
 });
 
 export const insertServiceSchema = createInsertSchema(services, {
@@ -83,13 +83,13 @@ export type Service = typeof services.$inferSelect;
 
 // Team members
 export const teamMembers = table("team_members", {
-  id: serial("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   position: text("position").notNull(),
   bio: text("bio").notNull(),
   imageUrl: text("image_url").notNull(),
   socialLinks: text("social_links"), // Optional JSON of social links as string
-  createdAt: timestamp("created_at").defaultNow().notNull()
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
 });
 
 export const insertTeamMemberSchema = createInsertSchema(teamMembers, {
@@ -105,13 +105,13 @@ export type TeamMember = typeof teamMembers.$inferSelect;
 
 // Testimonials
 export const testimonials = table("testimonials", {
-  id: serial("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   clientName: text("client_name").notNull(),
   clientType: text("client_type").notNull(), // Residential, Commercial, etc.
   content: text("content").notNull(),
   rating: integer("rating").notNull(), // 1-5 stars
   imageUrl: text("image_url"), // Optional client photo
-  createdAt: timestamp("created_at").defaultNow().notNull()
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
 });
 
 export const insertTestimonialSchema = createInsertSchema(testimonials, {
@@ -127,13 +127,13 @@ export type Testimonial = typeof testimonials.$inferSelect;
 
 // Contact form submissions
 export const contactSubmissions = table("contact_submissions", {
-  id: serial("id").primaryKey(),
+  id: integer("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   email: text("email").notNull(),
   phone: text("phone"),
   service: text("service").notNull(),
   message: text("message").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull()
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
 });
 
 export const insertContactSubmissionSchema = createInsertSchema(contactSubmissions, {

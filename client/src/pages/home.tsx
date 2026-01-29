@@ -16,12 +16,12 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-serif mb-4 text-charcoal dark:text-charcoal-light">Our Interior Design Work</h2>
             <p className="text-lg text-darkgray dark:text-darkgray-light max-w-2xl mx-auto">
-              Explore our diverse collection of interior design projects featuring TV units, kitchens, bedrooms, pooja rooms, and more.
+              Explore our diverse collection of interior design projects featuring TV units, kitchens, bedroom & wardrobe combinations, pooja rooms, crockery units, and study tables.
             </p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {/* TV Unit */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {/* 1. TV Unit */}
             <Link href="/gallery/tv-unit" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
               <div className="aspect-square bg-lightgray dark:bg-gray-700 flex items-center justify-center">
                 <div className="text-center p-4">
@@ -36,7 +36,7 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* Kitchen */}
+            {/* 2. Kitchen */}
             <Link href="/gallery/kitchen" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
               <div className="aspect-square bg-lightgray dark:bg-gray-700 flex items-center justify-center">
                 <div className="text-center p-4">
@@ -51,8 +51,8 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* Bedroom */}
-            <Link href="/gallery/bedroom" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
+            {/* 3. Bedroom & Wardrobe */}
+            <Link href="/gallery/bedroom-wardrobe" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
               <div className="aspect-square bg-lightgray dark:bg-gray-700 flex items-center justify-center">
                 <div className="text-center p-4">
                   <div className="w-12 h-12 mx-auto mb-3 bg-gold rounded-full flex items-center justify-center">
@@ -60,13 +60,13 @@ export default function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-serif text-charcoal dark:text-charcoal-light">Bedroom</h3>
-                  <p className="text-sm text-darkgray dark:text-darkgray-light mt-1">Comfortable sleeping spaces</p>
+                  <h3 className="text-lg font-serif text-charcoal dark:text-charcoal-light">Bedroom & Wardrobe</h3>
+                  <p className="text-sm text-darkgray dark:text-darkgray-light mt-1">Complete bedroom solutions</p>
                 </div>
               </div>
             </Link>
 
-            {/* Pooja Room */}
+            {/* 4. Pooja Room */}
             <Link href="/gallery/pooja-room" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
               <div className="aspect-square bg-lightgray dark:bg-gray-700 flex items-center justify-center">
                 <div className="text-center p-4">
@@ -81,65 +81,37 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* Living Room */}
-            <Link href="/gallery/living-room" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
+
+            {/* 6. Crockery Unit */}
+            <Link href="/gallery/crockery-unit" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
               <div className="aspect-square bg-lightgray dark:bg-gray-700 flex items-center justify-center">
                 <div className="text-center p-4">
                   <div className="w-12 h-12 mx-auto mb-3 bg-gold rounded-full flex items-center justify-center">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-serif text-charcoal dark:text-charcoal-light">Living Room</h3>
-                  <p className="text-sm text-darkgray dark:text-darkgray-light mt-1">Elegant gathering spaces</p>
+                  <h3 className="text-lg font-serif text-charcoal dark:text-charcoal-light">Crockery Unit</h3>
+                  <p className="text-sm text-darkgray dark:text-darkgray-light mt-1">Elegant display & storage</p>
                 </div>
               </div>
             </Link>
 
-            {/* Dining Room */}
-            <Link href="/gallery/dining-room" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
+            {/* 7. Study & Office Tables */}
+            <Link href="/gallery/study-office" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
               <div className="aspect-square bg-lightgray dark:bg-gray-700 flex items-center justify-center">
                 <div className="text-center p-4">
                   <div className="w-12 h-12 mx-auto mb-3 bg-gold rounded-full flex items-center justify-center">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-serif text-charcoal dark:text-charcoal-light">Dining Room</h3>
-                  <p className="text-sm text-darkgray dark:text-darkgray-light mt-1">Perfect dining experiences</p>
+                  <h3 className="text-lg font-serif text-charcoal dark:text-charcoal-light">Study & Office Tables</h3>
+                  <p className="text-sm text-darkgray dark:text-darkgray-light mt-1">Productive workspaces & tables</p>
                 </div>
               </div>
             </Link>
 
-            {/* Study Room */}
-            <Link href="/gallery/study-room" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
-              <div className="aspect-square bg-lightgray dark:bg-gray-700 flex items-center justify-center">
-                <div className="text-center p-4">
-                  <div className="w-12 h-12 mx-auto mb-3 bg-gold rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-serif text-charcoal dark:text-charcoal-light">Study Room</h3>
-                  <p className="text-sm text-darkgray dark:text-darkgray-light mt-1">Productive work spaces</p>
-                </div>
-              </div>
-            </Link>
-
-            {/* Bathroom */}
-            <Link href="/gallery/bathroom" className="group relative overflow-hidden bg-white dark:bg-lightgray-dark shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all cursor-pointer">
-              <div className="aspect-square bg-lightgray dark:bg-gray-700 flex items-center justify-center">
-                <div className="text-center p-4">
-                  <div className="w-12 h-12 mx-auto mb-3 bg-gold rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-serif text-charcoal dark:text-charcoal-light">Bathroom</h3>
-                  <p className="text-sm text-darkgray dark:text-darkgray-light mt-1">Luxurious bath spaces</p>
-                </div>
-              </div>
-            </Link>
           </div>
         </div>
       </section>
