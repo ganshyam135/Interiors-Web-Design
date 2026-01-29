@@ -3,11 +3,11 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16
-    container_name: medicallysync-postgres
+    container_name: rrinteriors-postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: medicallysync
+      POSTGRES_DB: rrinteriors
     ports:
       - "5432:5432"
     volumes:

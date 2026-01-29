@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: medicallysync
+    name: rrinteriors
     env: node
     plan: free
     buildCommand: npm ci && npm run build && npm run db:push
@@ -9,7 +9,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        value: sqlite:///opt/render/project/src/medicallysync.db
+        value: sqlite:///opt/render/project/src/rrinteriors.db
     disk:
       name: sqlite-disk
       mountPath: /opt/render/project/src
