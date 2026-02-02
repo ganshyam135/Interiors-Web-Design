@@ -1,4 +1,9 @@
-import { sqliteTable as table, text, integer, blob } from "drizzle-orm/sqlite-core";
+import {
+  sqliteTable as table,
+  text,
+  integer,
+  blob,
+} from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { relations } from "drizzle-orm";
@@ -26,16 +31,22 @@ export const projects = table("projects", {
   description: text("description").notNull(),
   category: text("category").notNull(), // residential, commercial, renovation
   imageUrl: text("image_url").notNull(),
-  featured: integer("featured", { mode: 'boolean' }).default(0),
-  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
+  featured: integer("featured", { mode: "boolean" }).default(false),
+  createdAt: text("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
 });
 
 export const insertProjectSchema = createInsertSchema(projects, {
   title: (schema) => schema.min(3, "Title must be at least 3 characters"),
-  description: (schema) => schema.min(10, "Description must be at least 10 characters"),
-  category: (schema) => schema.refine(val => ['residential', 'commercial', 'renovation', 'all'].includes(val), 
-    "Category must be one of: residential, commercial, renovation, all"),
-  imageUrl: (schema) => schema.url("Image URL must be a valid URL")
+  description: (schema) =>
+    schema.min(10, "Description must be at least 10 characters"),
+  category: (schema) =>
+    schema.refine(
+      (val) => ["residential", "commercial", "renovation", "all"].includes(val),
+      "Category must be one of: residential, commercial, renovation, all",
+    ),
+  imageUrl: (schema) => schema.url("Image URL must be a valid URL"),
 });
 
 export type InsertProject = z.infer<typeof insertProjectSchema>;
@@ -48,14 +59,18 @@ export const transformations = table("transformations", {
   description: text("description").notNull(),
   beforeImageUrl: text("before_image_url").notNull(),
   afterImageUrl: text("after_image_url").notNull(),
-  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
+  createdAt: text("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
 });
 
 export const insertTransformationSchema = createInsertSchema(transformations, {
   title: (schema) => schema.min(3, "Title must be at least 3 characters"),
-  description: (schema) => schema.min(10, "Description must be at least 10 characters"),
-  beforeImageUrl: (schema) => schema.url("Before image URL must be a valid URL"),
-  afterImageUrl: (schema) => schema.url("After image URL must be a valid URL")
+  description: (schema) =>
+    schema.min(10, "Description must be at least 10 characters"),
+  beforeImageUrl: (schema) =>
+    schema.url("Before image URL must be a valid URL"),
+  afterImageUrl: (schema) => schema.url("After image URL must be a valid URL"),
 });
 
 export type InsertTransformation = z.infer<typeof insertTransformationSchema>;
@@ -68,14 +83,18 @@ export const services = table("services", {
   description: text("description").notNull(),
   imageUrl: text("image_url").notNull(),
   features: text("features").notNull(), // Array of features as JSON string
-  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
+  createdAt: text("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
 });
 
 export const insertServiceSchema = createInsertSchema(services, {
   title: (schema) => schema.min(3, "Title must be at least 3 characters"),
-  description: (schema) => schema.min(10, "Description must be at least 10 characters"),
+  description: (schema) =>
+    schema.min(10, "Description must be at least 10 characters"),
   imageUrl: (schema) => schema.url("Image URL must be a valid URL"),
-  features: () => z.array(z.string().min(3)).min(1, "At least one feature is required")
+  features: () =>
+    z.array(z.string().min(3)).min(1, "At least one feature is required"),
 });
 
 export type InsertService = z.infer<typeof insertServiceSchema>;
@@ -89,7 +108,9 @@ export const teamMembers = table("team_members", {
   bio: text("bio").notNull(),
   imageUrl: text("image_url").notNull(),
   socialLinks: text("social_links"), // Optional JSON of social links as string
-  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
+  createdAt: text("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
 });
 
 export const insertTeamMemberSchema = createInsertSchema(teamMembers, {
@@ -97,7 +118,7 @@ export const insertTeamMemberSchema = createInsertSchema(teamMembers, {
   position: (schema) => schema.min(2, "Position must be at least 2 characters"),
   bio: (schema) => schema.min(10, "Bio must be at least 10 characters"),
   imageUrl: (schema) => schema.url("Image URL must be a valid URL"),
-  socialLinks: () => z.record(z.string().url(), z.string().url()).optional()
+  socialLinks: () => z.record(z.string().url(), z.string().url()).optional(),
 });
 
 export type InsertTeamMember = z.infer<typeof insertTeamMemberSchema>;
@@ -111,15 +132,22 @@ export const testimonials = table("testimonials", {
   content: text("content").notNull(),
   rating: integer("rating").notNull(), // 1-5 stars
   imageUrl: text("image_url"), // Optional client photo
-  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
+  createdAt: text("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
 });
 
 export const insertTestimonialSchema = createInsertSchema(testimonials, {
-  clientName: (schema) => schema.min(2, "Client name must be at least 2 characters"),
-  clientType: (schema) => schema.min(2, "Client type must be at least 2 characters"),
+  clientName: (schema) =>
+    schema.min(2, "Client name must be at least 2 characters"),
+  clientType: (schema) =>
+    schema.min(2, "Client type must be at least 2 characters"),
   content: (schema) => schema.min(20, "Content must be at least 20 characters"),
-  rating: (schema) => schema.min(1, "Rating must be at least 1").max(5, "Rating cannot be more than 5"),
-  imageUrl: (schema) => schema.url("Image URL must be a valid URL").optional()
+  rating: (schema) =>
+    schema
+      .min(1, "Rating must be at least 1")
+      .max(5, "Rating cannot be more than 5"),
+  imageUrl: (schema) => schema.url("Image URL must be a valid URL").optional(),
 });
 
 export type InsertTestimonial = z.infer<typeof insertTestimonialSchema>;
@@ -133,16 +161,24 @@ export const contactSubmissions = table("contact_submissions", {
   phone: text("phone"),
   service: text("service").notNull(),
   message: text("message").notNull(),
-  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
+  createdAt: text("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
 });
 
-export const insertContactSubmissionSchema = createInsertSchema(contactSubmissions, {
-  name: (schema) => schema.min(2, "Name must be at least 2 characters"),
-  email: (schema) => schema.email("Please provide a valid email address"),
-  phone: (schema) => schema.optional(),
-  service: (schema) => schema.min(2, "Service must be at least 2 characters"),
-  message: (schema) => schema.min(20, "Message must be at least 20 characters")
-});
+export const insertContactSubmissionSchema = createInsertSchema(
+  contactSubmissions,
+  {
+    name: (schema) => schema.min(2, "Name must be at least 2 characters"),
+    email: (schema) => schema.email("Please provide a valid email address"),
+    phone: (schema) => schema.optional(),
+    service: (schema) => schema.min(2, "Service must be at least 2 characters"),
+    message: (schema) =>
+      schema.min(20, "Message must be at least 20 characters"),
+  },
+);
 
-export type InsertContactSubmission = z.infer<typeof insertContactSubmissionSchema>;
+export type InsertContactSubmission = z.infer<
+  typeof insertContactSubmissionSchema
+>;
 export type ContactSubmission = typeof contactSubmissions.$inferSelect;

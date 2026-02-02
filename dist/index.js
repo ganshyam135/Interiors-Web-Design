@@ -1,4 +1,10 @@
 var __defProp = Object.defineProperty;
+var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
+  get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
+}) : x)(function(x) {
+  if (typeof require !== "undefined") return require.apply(this, arguments);
+  throw Error('Dynamic require of "' + x + '" is not supported');
+});
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -6,13 +12,13 @@ var __export = (target, all) => {
 
 // server/index.ts
 import express2 from "express";
+import cors from "cors";
 
 // server/routes.ts
 import { createServer } from "http";
 
 // db/index.ts
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import Database from "better-sqlite3";
+import * as dotenv from "dotenv";
 
 // shared/schema.ts
 var schema_exports = {};
@@ -32,7 +38,11 @@ __export(schema_exports, {
   transformations: () => transformations,
   users: () => users
 });
-import { sqliteTable as table, text, integer } from "drizzle-orm/sqlite-core";
+import {
+  sqliteTable as table,
+  text,
+  integer
+} from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -52,7 +62,7 @@ var projects = table("projects", {
   category: text("category").notNull(),
   // residential, commercial, renovation
   imageUrl: text("image_url").notNull(),
-  featured: integer("featured", { mode: "boolean" }).default(0),
+  featured: integer("featured", { mode: "boolean" }).default(false),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
 });
 var insertProjectSchema = createInsertSchema(projects, {
@@ -138,25 +148,43 @@ var contactSubmissions = table("contact_submissions", {
   message: text("message").notNull(),
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`).notNull()
 });
-var insertContactSubmissionSchema = createInsertSchema(contactSubmissions, {
-  name: (schema) => schema.min(2, "Name must be at least 2 characters"),
-  email: (schema) => schema.email("Please provide a valid email address"),
-  phone: (schema) => schema.optional(),
-  service: (schema) => schema.min(2, "Service must be at least 2 characters"),
-  message: (schema) => schema.min(20, "Message must be at least 20 characters")
-});
+var insertContactSubmissionSchema = createInsertSchema(
+  contactSubmissions,
+  {
+    name: (schema) => schema.min(2, "Name must be at least 2 characters"),
+    email: (schema) => schema.email("Please provide a valid email address"),
+    phone: (schema) => schema.optional(),
+    service: (schema) => schema.min(2, "Service must be at least 2 characters"),
+    message: (schema) => schema.min(20, "Message must be at least 20 characters")
+  }
+);
 
 // db/index.ts
-import * as dotenv from "dotenv";
 dotenv.config();
 if (!process.env.DATABASE_URL) {
   throw new Error(
     "DATABASE_URL must be set. Did you forget to provision a database?"
   );
 }
-var dbPath = process.env.DATABASE_URL.replace("sqlite://", "");
-var sqlite = new Database(dbPath);
-var db = drizzle(sqlite, { schema: schema_exports });
+var dbUrl = process.env.DATABASE_URL;
+var _db;
+var _pool = void 0;
+if (dbUrl.startsWith("sqlite://")) {
+  const sqliteDbPath = dbUrl.replace("sqlite://", "");
+  const Database = __require("better-sqlite3").default;
+  const { drizzle } = __require("drizzle-orm/better-sqlite3");
+  const sqlite = new Database(sqliteDbPath);
+  _db = drizzle(sqlite, { schema: schema_exports });
+  _pool = { end: () => {
+  } };
+} else {
+  const { Pool } = __require("pg");
+  const { drizzle } = __require("drizzle-orm/node-postgres");
+  const pool = new Pool({ connectionString: dbUrl });
+  _db = drizzle(pool, { schema: schema_exports });
+  _pool = pool;
+}
+var db = _db;
 
 // server/storage.ts
 import { eq, desc } from "drizzle-orm";
@@ -457,10 +485,15 @@ var NODE_ENV = process.env.NODE_ENV || "development";
 var app = express2();
 app.use(express2.json());
 app.use(express2.urlencoded({ extended: false }));
+app.use(
+  cors({
+    origin: "*"
+  })
+);
 app.use((req, res, next) => {
   const start = Date.now();
   const path3 = req.path;
-  let capturedJsonResponse = void 0;
+  let capturedJsonResponse;
   const originalResJson = res.json;
   res.json = function(bodyJson, ...args) {
     capturedJsonResponse = bodyJson;
@@ -494,11 +527,8 @@ app.use((req, res, next) => {
   } else {
     serveStatic(app);
   }
-  const port = 5e3;
-  server.listen({
-    port,
-    host: "localhost"
-  }, () => {
-    log(`serving on port ${port}`);
+  const PORT = process.env.PORT || 5e3;
+  server.listen(Number(PORT), "0.0.0.0", () => {
+    log(`\u{1F680} Server running on port ${PORT}`);
   });
 })();

@@ -1,7 +1,5 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3';
-import Database from 'better-sqlite3';
+import * as dotenv from "dotenv";
 import * as schema from "@shared/schema";
-import * as dotenv from 'dotenv';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -12,9 +10,31 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-// For local development, use SQLite
-const dbPath = process.env.DATABASE_URL.replace('sqlite://', '');
-const sqlite = new Database(dbPath);
-export const db = drizzle(sqlite, { schema });
-// Export for compatibility with existing code
-export const pool = { end: () => {} };
+const dbUrl = process.env.DATABASE_URL;
+
+// We support either a local SQLite file (sqlite://path) or a Postgres URL (postgres://...)
+let _db: any;
+let _pool: any = undefined;
+
+if (dbUrl.startsWith("sqlite://")) {
+  // SQLite (local development)
+  const sqliteDbPath = dbUrl.replace("sqlite://", "");
+  // lazy import to avoid optional deps when not used
+  const Database = require("better-sqlite3").default;
+  const { drizzle } = require("drizzle-orm/better-sqlite3");
+
+  const sqlite = new Database(sqliteDbPath);
+  _db = drizzle(sqlite, { schema });
+  _pool = { end: () => {} };
+} else {
+  // Postgres (production) using node-postgres
+  const { Pool } = require("pg");
+  const { drizzle } = require("drizzle-orm/node-postgres");
+
+  const pool = new Pool({ connectionString: dbUrl });
+  _db = drizzle(pool, { schema });
+  _pool = pool;
+}
+
+export const db = _db;
+export const pool = _pool;
