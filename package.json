@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx server/index.ts",
     "build": "vite build",
+    "vercel-build": "vite build",
     "build:full": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc",
@@ -80,7 +81,12 @@
     "wouter": "^3.7.0",
     "ws": "^8.18.0",
     "zod": "^3.24.3",
-    "zod-validation-error": "^3.4.0"
+    "zod-validation-error": "^3.4.0",
+    "vite": "^5.4.9",
+    "@vitejs/plugin-react": "^4.3.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14"
   },
   "devDependencies": {
     "@replit/vite-plugin-runtime-error-modal": "^0.0.3",
@@ -94,15 +100,10 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "@types/ws": "^8.5.13",
-    "@vitejs/plugin-react": "^4.3.2",
-    "autoprefixer": "^10.4.20",
     "drizzle-kit": "^0.27.1",
     "esbuild": "^0.24.0",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.14",
     "tsx": "^4.19.1",
-    "typescript": "5.6.3",
-    "vite": "^5.4.9"
+    "typescript": "5.6.3"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8"
